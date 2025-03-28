@@ -1,6 +1,6 @@
 # Description
 
-This is a server that receives a json input and creates a pdf file with the data. The server is built using Rust and Actix-web. The server listens on port 8080 and has a single endpoint /generate_pdf that accepts a POST request with a json body. The json body should contain the following fields:
+This is a server that receives a json input and creates a pdf file with the data. The server is built using Rust and Actix-web. The server listens on port 8080 and has a single endpoint /render-template that accepts a POST request with a json body. The json body should contain the following fields:
 - templateId: the id of the template to use for the pdf generation
 - data: the data to be used in the template.
 
