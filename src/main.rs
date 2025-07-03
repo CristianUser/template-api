@@ -27,8 +27,8 @@ pub async fn main() -> std::io::Result<()> {
             .service(health)
             .service(render_pdf)
     })
-    .bind(("0.0.0.0", 5000))?;
+    .bind(("0.0.0.0", 5005))?;
 
-    println!("Listening on port 5000");
+    println!("Listening on port 5005");
     server.run().await
 }

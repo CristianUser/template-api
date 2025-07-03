@@ -4,6 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content="Invoice template for {{ workspace.name }}">
+  <meta name="author" content="{{ workspace.name }}">
+  <meta name="keywords" content="invoice, {{ workspace.name }}, {{ customer.name }}, {{ invoice.sequenceId }}">
+  <title>Invoice {{ invoice.sequenceId }}</title>
   <style>
     @page {
       size: A4;
@@ -12,7 +17,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
 </head>
 
-<body>
+<body onload="window.print()" onafterprint="window.close()">
   <div class="" id="invoice">
 
     <div class="grid grid-cols-2 items-center">
@@ -26,13 +31,16 @@
           {{ workspace.name }}
         </p>
         <p class="text-gray-500 text-sm">
+          {{ workspace.address }}
+        </p>
+        <p class="text-gray-500 text-sm">
           {{ workspace.email }}
         </p>
         <p class="text-gray-500 text-sm mt-1">
           {{ workspace.phone }}
         </p>
         <p class="text-gray-500 text-sm mt-1">
-          RNC: {{ workspace.config.taxpayerId }}
+          RNC: {{ workspace.rnc }}
         </p>
       </div>
     </div>
@@ -48,6 +56,9 @@
         </p>
         <p class="text-gray-500">
           {{ customer.email }}
+        </p>
+        <p class="text-gray-500">
+          {{ customer.phone }}
         </p>
       </div>
 
@@ -88,12 +99,12 @@
           {{#each items}}
           <tr class="border-b border-gray-200">
             <td class="max-w-0 py-5 pl-4 pr-3 text-sm sm:pl-0">
-              <div class="font-medium text-gray-900">{{ product.name }}</div>
+              <div class="font-medium text-gray-900">{{ description }}</div>
               {{!-- <div class="mt-1 truncate text-gray-500">Laravel based e-commerce platform.</div> --}}
             </td>
             <td class="hidden px-3 py-5 text-right text-sm text-gray-500 sm:table-cell">{{ quantity }}</td>
-            <td class="hidden px-3 py-5 text-right text-sm text-gray-500 sm:table-cell">{{ price }}</td>
-            <td class="py-5 pl-3 pr-4 text-right text-sm text-gray-500 sm:pr-0">{{ quantity }} x {{ price}}</td>
+            <td class="hidden px-3 py-5 text-right text-sm text-gray-500 sm:table-cell">{{ unitPrice }}</td>
+            <td class="py-5 pl-3 pr-4 text-right text-sm text-gray-500 sm:pr-0">{{ total }}</td>
           </tr>
           {{/each}}
         </tbody>
@@ -111,13 +122,6 @@
             </th>
             <th scope="row" class="pl-6 pr-3 pt-4 text-left text-sm font-normal text-gray-500 sm:hidden">Impuesto</th>
             <td class="pl-3 pr-6 pt-4 text-right text-sm text-gray-500 sm:pr-0">{{ taxes }}</td>
-          </tr>
-          <tr>
-            <th scope="row" colspan="3"
-              class="hidden pl-4 pr-3 pt-4 text-right text-sm font-normal text-gray-500 sm:table-cell sm:pl-0">Descuento
-            </th>
-            <th scope="row" class="pl-6 pr-3 pt-4 text-left text-sm font-normal text-gray-500 sm:hidden">Descuento</th>
-            <td class="pl-3 pr-6 pt-4 text-right text-sm text-gray-500 sm:pr-0">{{ discount }}</td>
           </tr>
           <tr>
             <th scope="row" colspan="3"
