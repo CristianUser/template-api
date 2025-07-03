@@ -26,12 +26,18 @@ pub async fn render_pdf(job: web::Json<TemplateRenderInput>) -> impl Responder {
 
     println!("Rendering template: {}", template_id);
     if prerender {
+        pyo3::prepare_freethreaded_python();
         let pdf_bytes_result: Result<Vec<u8>, pyo3::PyErr> = Python::with_gil(|py| {
             let weasyprint_module = PyModule::import(py, "weasyprint")?;
             let html_class = weasyprint_module.getattr("HTML")?;
 
+            // write the HTML string to a file
+            std::fs::write("temp.html", &html_string)
+                .expect("Failed to write HTML to file");
+            
+
             // Create an HTML object from the string
-            let html_obj = html_class.call1((PyString::new(py, &html_string),))?;
+            let html_obj = html_class.call1((PyString::new(py, "temp.html"),))?;
 
             // Render to PDF bytes
             let write_pdf_method = html_obj.getattr("write_pdf")?;
